@@ -1,0 +1,56 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Farm {
+  id        Int      @id @default(autoincrement())
+  name      String
+  location  String
+  crops     Crop[]
+  staff     Staff[]
+  costs     Cost[]
+}
+
+model Crop {
+  id        Int      @id @default(autoincrement())
+  name      String
+  hectares  Float
+  farmId    Int
+  farm      Farm     @relation(fields: [farmId], references: [id])
+  costs     Cost[]
+}
+
+model Staff {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String
+  salary    Float
+  farmId    Int
+  farm      Farm     @relation(fields: [farmId], references: [id])
+  payrolls  Payroll[]
+}
+
+model Cost {
+  id          Int      @id @default(autoincrement())
+  amount      Float
+  description String
+  date        DateTime @default(now())
+  farmId      Int
+  farm        Farm     @relation(fields: [farmId], references: [id])
+  cropId      Int?
+  crop        Crop?    @relation(fields: [cropId], references: [id])
+}
+
+model Payroll {
+  id          Int      @id @default(autoincrement())
+  staffId     Int
+  staff       Staff    @relation(fields: [staffId], references: [id])
+  amount      Float
+  month       String
+  date        DateTime @default(now())
+}
