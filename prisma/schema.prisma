@@ -8,49 +8,335 @@ generator client {
 }
 
 model Farm {
-  id        Int      @id @default(autoincrement())
-  name      String
-  location  String
-  crops     Crop[]
-  staff     Staff[]
-  costs     Cost[]
+  id            Int      @id @default(autoincrement())
+  name          String
+  location      String
+  description   String?
+  crops         Crop[]
+  cropCycles    CropCycle[]
+  staff         Staff[]
+  costs         Cost[]
+  warehouses    Warehouse[]
+  livestock     LivestockBatch[]
+  assets        FixedAsset[]
+  bankAccounts  BankAccount[]
+  fuelTanks     FuelTank[]
+  budgets       Budget[]
+  loansGiven    InterFarmLoan[] @relation("LenderFarm")
+  loansReceived InterFarmLoan[] @relation("BorrowerFarm")
+  purchaseOrders PurchaseOrder[]
+  salesInvoices SalesInvoice[]
 }
 
 model Crop {
-  id        Int      @id @default(autoincrement())
-  name      String
-  hectares  Float
+  id         Int         @id @default(autoincrement())
+  name       String
+  hectares   Float
+  farmId     Int
+  farm       Farm        @relation(fields: [farmId], references: [id])
+  costs      Cost[]
+  cropCycles CropCycle[]
+}
+
+model CropCycle {
+  id                  Int       @id @default(autoincrement())
+  farmId              Int
+  farm                Farm      @relation(fields: [farmId], references: [id])
+  cropId              Int
+  crop                Crop      @relation(fields: [cropId], references: [id])
+  season              String
+  plantingDate        DateTime
+  expectedHarvestDate DateTime?
+  actualHarvestDate   DateTime?
+  stage               String    @default("Planting")
+  hectaresPlanted     Float
+  yieldTonnes         Float?
+  costs               Cost[]
+}
+
+model LivestockBatch {
+  id        Int              @id @default(autoincrement())
   farmId    Int
-  farm      Farm     @relation(fields: [farmId], references: [id])
+  farm      Farm             @relation(fields: [farmId], references: [id])
+  species   String
+  batchCode String
+  purpose   String
+  headCount Int
+  events    LivestockEvent[]
   costs     Cost[]
 }
 
-model Staff {
-  id        Int      @id @default(autoincrement())
-  name      String
-  role      String
-  salary    Float
-  farmId    Int
-  farm      Farm     @relation(fields: [farmId], references: [id])
-  payrolls  Payroll[]
+model LivestockEvent {
+  id        Int            @id @default(autoincrement())
+  batchId   Int
+  batch     LivestockBatch @relation(fields: [batchId], references: [id])
+  eventType String
+  quantity  Int
+  unitValue Float?
+  notes     String?
+  date      DateTime       @default(now())
 }
 
-model Cost {
-  id          Int      @id @default(autoincrement())
-  amount      Float
-  description String
-  date        DateTime @default(now())
-  farmId      Int
-  farm        Farm     @relation(fields: [farmId], references: [id])
-  cropId      Int?
-  crop        Crop?    @relation(fields: [cropId], references: [id])
+model Staff {
+  id             Int           @id @default(autoincrement())
+  name           String
+  employeeCode   String?
+  role           String
+  employeeType   String        @default("Permanent")
+  salary         Float
+  farmId         Int
+  farm           Farm          @relation(fields: [farmId], references: [id])
+  payrollLines   PayrollLine[]
+  costAllocation String        @default("Farm")
 }
 
 model Payroll {
+  id         Int           @id @default(autoincrement())
+  month      String
+  totalGross Float
+  totalPaye  Float
+  totalNssa  Float
+  totalNet   Float
+  runDate    DateTime      @default(now())
+  lines      PayrollLine[]
+}
+
+model PayrollLine {
+  id              Int     @id @default(autoincrement())
+  payrollId       Int
+  payroll         Payroll @relation(fields: [payrollId], references: [id])
+  staffId         Int
+  staff           Staff   @relation(fields: [staffId], references: [id])
+  grossSalary     Float
+  paye            Float
+  nssa            Float
+  otherDeductions Float   @default(0)
+  netSalary       Float
+  month           String
+}
+
+model Warehouse {
+  id         Int             @id @default(autoincrement())
+  name       String
+  farmId     Int
+  farm       Farm            @relation(fields: [farmId], references: [id])
+  stockItems InventoryItem[]
+}
+
+model InventoryItem {
+  id             Int             @id @default(autoincrement())
+  itemCode       String          @unique
+  name           String
+  category       String
+  unit           String
+  reorderLevel   Float           @default(0)
+  currentStock   Float           @default(0)
+  unitCost       Float           @default(0)
+  warehouseId    Int
+  warehouse      Warehouse       @relation(fields: [warehouseId], references: [id])
+  stockMovements StockMovement[]
+  bomLines       BOMLine[]
+}
+
+model StockMovement {
+  id            Int           @id @default(autoincrement())
+  itemId        Int
+  item          InventoryItem @relation(fields: [itemId], references: [id])
+  movementType  String
+  quantity      Float
+  unitCost      Float?
+  reference     String?
+  notes         String?
+  date          DateTime      @default(now())
+  toWarehouseId Int?
+}
+
+model FuelTank {
+  id             Int               @id @default(autoincrement())
+  farmId         Int
+  farm           Farm              @relation(fields: [farmId], references: [id])
+  tankCode       String
+  fuelType       String
+  capacityLitres Float
+  currentLitres  Float
+  transactions   FuelTransaction[]
+}
+
+model FuelTransaction {
+  id        Int      @id @default(autoincrement())
+  tankId    Int
+  tank      FuelTank @relation(fields: [tankId], references: [id])
+  txType    String
+  litres    Float
+  unitPrice Float?
+  reference String?
+  date      DateTime @default(now())
+}
+
+model Cost {
+  id               Int             @id @default(autoincrement())
+  amount           Float
+  description      String
+  category         String          @default("General")
+  date             DateTime        @default(now())
+  farmId           Int
+  farm             Farm            @relation(fields: [farmId], references: [id])
+  cropId           Int?
+  crop             Crop?           @relation(fields: [cropId], references: [id])
+  cropCycleId      Int?
+  cropCycle        CropCycle?      @relation(fields: [cropCycleId], references: [id])
+  livestockBatchId Int?
+  livestockBatch   LivestockBatch? @relation(fields: [livestockBatchId], references: [id])
+  businessUnit     String?
+}
+
+model Contact {
+  id             Int             @id @default(autoincrement())
+  name           String
+  contactType    String
+  phone          String?
+  email          String?
+  address        String?
+  country        String          @default("Zimbabwe")
+  status         String          @default("Active")
+  purchaseOrders PurchaseOrder[]
+  salesInvoices  SalesInvoice[]
+}
+
+model PurchaseOrder {
   id          Int      @id @default(autoincrement())
-  staffId     Int
-  staff       Staff    @relation(fields: [staffId], references: [id])
-  amount      Float
-  month       String
+  poNumber    String   @unique
+  contactId   Int
+  contact     Contact  @relation(fields: [contactId], references: [id])
+  farmId      Int
+  farm        Farm     @relation(fields: [farmId], references: [id])
+  status      String   @default("Draft")
+  totalAmount Float
+  notes       String?
   date        DateTime @default(now())
+  lines       POLine[]
+}
+
+model POLine {
+  id          Int           @id @default(autoincrement())
+  poId        Int
+  po          PurchaseOrder @relation(fields: [poId], references: [id])
+  description String
+  quantity    Float
+  unitPrice   Float
+  totalPrice  Float
+}
+
+model SalesInvoice {
+  id            Int           @id @default(autoincrement())
+  invoiceNumber String        @unique
+  contactId     Int?
+  contact       Contact?      @relation(fields: [contactId], references: [id])
+  farmId        Int
+  farm          Farm          @relation(fields: [farmId], references: [id])
+  outlet        String
+  status        String        @default("Draft")
+  totalAmount   Float
+  date          DateTime      @default(now())
+  lines         InvoiceLine[]
+}
+
+model InvoiceLine {
+  id          Int          @id @default(autoincrement())
+  invoiceId   Int
+  invoice     SalesInvoice @relation(fields: [invoiceId], references: [id])
+  description String
+  quantity    Float
+  unitPrice   Float
+  totalPrice  Float
+}
+
+model FixedAsset {
+  id              Int      @id @default(autoincrement())
+  assetTag        String   @unique
+  name            String
+  category        String
+  farmId          Int
+  farm            Farm     @relation(fields: [farmId], references: [id])
+  purchaseDate    DateTime
+  purchaseCost    Float
+  usefulLifeYears Int
+  residualValue   Float    @default(0)
+  status          String   @default("Operational")
+  notes           String?
+}
+
+model BankAccount {
+  id            Int               @id @default(autoincrement())
+  farmId        Int
+  farm          Farm              @relation(fields: [farmId], references: [id])
+  bankName      String
+  accountNumber String
+  currency      String            @default("USD")
+  balance       Float             @default(0)
+  transactions  BankTransaction[]
+}
+
+model BankTransaction {
+  id          Int         @id @default(autoincrement())
+  accountId   Int
+  account     BankAccount @relation(fields: [accountId], references: [id])
+  txType      String
+  amount      Float
+  description String
+  reference   String?
+  date        DateTime    @default(now())
+}
+
+model InterFarmLoan {
+  id             Int      @id @default(autoincrement())
+  lenderFarmId   Int
+  lenderFarm     Farm     @relation("LenderFarm", fields: [lenderFarmId], references: [id])
+  borrowerFarmId Int
+  borrowerFarm   Farm     @relation("BorrowerFarm", fields: [borrowerFarmId], references: [id])
+  amount         Float
+  outstanding    Float
+  purpose        String?
+  date           DateTime @default(now())
+  dueDate        DateTime?
+  status         String   @default("Active")
+}
+
+model Budget {
+  id           Int   @id @default(autoincrement())
+  farmId       Int
+  farm         Farm  @relation(fields: [farmId], references: [id])
+  year         Int
+  category     String
+  budgetAmount Float
+  actualAmount Float @default(0)
+}
+
+model BillOfMaterials {
+  id               Int              @id @default(autoincrement())
+  productName      String
+  unit             String
+  batchSize        Float
+  lines            BOMLine[]
+  productionOrders ProductionOrder[]
+}
+
+model BOMLine {
+  id       Int             @id @default(autoincrement())
+  bomId    Int
+  bom      BillOfMaterials @relation(fields: [bomId], references: [id])
+  itemId   Int
+  item     InventoryItem   @relation(fields: [itemId], references: [id])
+  quantity Float
+  unit     String
+}
+
+model ProductionOrder {
+  id          Int             @id @default(autoincrement())
+  bomId       Int
+  bom         BillOfMaterials @relation(fields: [bomId], references: [id])
+  quantity    Float
+  status      String          @default("Planned")
+  date        DateTime        @default(now())
+  costPerUnit Float?
 }

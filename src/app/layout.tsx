@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ThemeToggle from "./ThemeToggle";
 import MobileNav from "./MobileNav";
+import ToastProvider from "./_components/ToastProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Wisdom ERP - Pricabe Enterprises",
-  description: "Bespoke ERP for Pricabe Enterprises (Pvt) Ltd",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+  title: "Wisdom ERP — Pricabe Enterprises",
+  description: "Integrated ERP System for Pricabe Enterprises (Pvt) Ltd",
 };
 
 export default function RootLayout({
@@ -17,28 +17,29 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="erp-container">
-          <MobileNav />
-          
-          {/* Main Content */}
-          <main className="erp-main">
+        <ToastProvider>
+          <div className="erp-container">
+            <MobileNav />
+
+            <main className="erp-main">
             <header className="erp-header">
               <div className="header-title">
-                <h1>Dashboard</h1>
-                <p>Welcome to Pricabe Enterprises ERP System</p>
+                <h1>Pricabe Enterprises ERP</h1>
+                <p>Wisdom ERP · Multi-Farm Agribusiness Management</p>
               </div>
               <div className="header-actions">
                 <ThemeToggle />
                 <span className="flag-icon">🇿🇼</span>
-                <button className="client-btn">Client 1 - Consolidated ˅</button>
+                <button className="client-btn">Consolidated View ˅</button>
               </div>
             </header>
-            
-            <div className="erp-content">
-              {children}
-            </div>
-          </main>
-        </div>
+
+              <div className="erp-content">
+                {children}
+              </div>
+            </main>
+          </div>
+        </ToastProvider>
       </body>
     </html>
   );

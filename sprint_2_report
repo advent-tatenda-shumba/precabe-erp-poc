@@ -1,0 +1,55 @@
+# Wisdom ERP — Sprint 2 Interactive Build Report ✅
+### Pricabe Enterprises (Pvt) Ltd
+
+The app is live at **http://localhost:3000**
+
+---
+
+## What Was Built in Sprint 2
+
+We upgraded the application from a view-only data presentation layer to an **interactive ERP** system. 
+This was achieved by introducing Next.js Server Actions and wiring them to Client Component Modals for the core operations.
+
+### New Interactive Capabilities:
+
+| Module | New Features |
+|---|---|
+| **Global UI** | Smooth, sliding `Modal` component and top-right `Toast` notification system. Sidebar user `SettingsPanel` sliding drawer. |
+| **Agriculture** | Form to start a `+ New Cycle` — dynamically linked to Farm and Crop records. |
+| **Livestock** | Form to register a `+ New Batch` of animals and `+ Log Event` (Births, Deaths, Sales, Treatments) which automatically updates head counts and cost logs. |
+| **Inventory** | Functional `+ Add Stock` form updating weighted average costs, `+ Stock Transfer` form moving items between farm warehouses, and `+ Log Delivery` for fuel tanks. |
+| **Purchasing** | Complex `+ New PO` form with dynamic line items (add/remove rows, auto-calculating totals). `Approve` button for pending orders. |
+| **Sales** | `+ New Invoice` form with dynamic line items. Allows assigning sales to different outlets (Butchery, Bar, Retail, etc.). |
+| **Manufacturing** | `+ New Production Run` form connecting BOMs to Target Quantities. |
+| **Fixed Assets** | `+ Register Asset` form for auto-calculating straight-line depreciation. |
+| **CRM / Address Book**| `+ Add Contact` / `+ Add Customer` forms supporting CRM and supplier pipelines. |
+| **Setup** | `+ Add Farm`, `+ Add Account` for global multi-entity configuration. |
+
+---
+
+## Database Status (28 Models → SQLite)
+| Model | Records seeded / manipulated |
+|---|---|
+| Farms | 6 (Kwekwe Main, Kwekwe 2, Mazoe, Bikita, Chiredzi, Tynwald) |
+| Crops | 10 fields across 5 farms |
+| Crop Cycles | 8 cycles (Planting → Growing → Harvesting → Complete) |
+| Livestock Batches | 6 (Cattle ×3, Goats, Sheep, Pigs) with events |
+| Staff | 53 employees across all farms |
+| Payroll | 3 months (Apr–Jun 2026) with PAYE/NSSA |
+| Warehouses | 8 across all locations |
+| Inventory Items | 17 items (fertilizers, seeds, feed, fuel, goods) |
+| Fuel Tanks | 5 tanks (diesel + petrol, with real levels) |
+| Purchase Orders | 6 POs (various statuses) |
+| Sales Invoices | 8 invoices across Wholesale, Butchery, Fuel, Bakery, Bar |
+| Contacts | 11 (suppliers, customers, banks) |
+
+---
+
+## What's Next (Sprint 3 Suggestions)
+
+| Priority | Feature |
+|---|---|
+| High | **Remaining Forms** — Add interactivity to Manufacturing, CRM, Setup, Address Book, and Fixed Assets |
+| High | **Authentication** — login page, session management, role enforcement |
+| Medium | **CSV/Excel Export** — download tables and reports as Excel files |
+| Low | **Real-time Notifications** — low stock alerts, overdue invoice alerts |
