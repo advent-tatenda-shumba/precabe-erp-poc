@@ -301,7 +301,6 @@ export async function createFarm(data: { name: string; location: string; sizeHec
     data: {
       name: data.name,
       location: data.location,
-      sizeHectares: data.sizeHectares,
     },
   });
   revalidatePath("/setup");

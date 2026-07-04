@@ -3,13 +3,26 @@
 import { useEffect, useState } from "react";
 import { showToast } from "./ToastProvider";
 
+interface NavUser {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+}
+
 interface SettingsPanelProps {
   isOpen: boolean;
   onClose: () => void;
+  user?: NavUser | null;
 }
 
-export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
+export default function SettingsPanel({ isOpen, onClose, user }: SettingsPanelProps) {
   const [activeTab, setActiveTab] = useState<"profile" | "preferences">("profile");
+
+  const initials = user
+    ? user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
+    : "?";
+
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -46,24 +59,24 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
           {activeTab === "profile" ? (
             <form onSubmit={handleSaveProfile}>
               <div className="settings-avatar-row">
-                <div className="settings-avatar-big">JH</div>
+                <div className="settings-avatar-big">{initials}</div>
                 <div>
-                  <div style={{ fontSize: "1rem", fontWeight: 700 }}>Jenny Howard</div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>Super Admin</div>
+                  <div style={{ fontSize: "1rem", fontWeight: 700 }}>{user?.name ?? "—"}</div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>{user?.role ?? "—"}</div>
                 </div>
               </div>
 
               <div className="form-group">
                 <label className="form-label">Full Name</label>
-                <input type="text" className="form-input" defaultValue="Jenny Howard" required />
+                <input type="text" className="form-input" defaultValue={user?.name ?? ""} required />
               </div>
               <div className="form-group">
                 <label className="form-label">Email Address</label>
-                <input type="email" className="form-input" defaultValue="j.howard@pricabe.co.zw" required />
+                <input type="email" className="form-input" defaultValue={user?.email ?? ""} required />
               </div>
               <div className="form-group">
                 <label className="form-label">Phone Number</label>
-                <input type="tel" className="form-input" defaultValue="+263 77 123 4567" />
+                <input type="tel" className="form-input" defaultValue="+263 77 000 0000" />
               </div>
               
               <div className="settings-section" style={{ marginTop: "2rem" }}>
