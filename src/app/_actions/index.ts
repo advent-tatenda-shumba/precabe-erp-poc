@@ -279,7 +279,7 @@ export async function createFixedAsset(data: { name: string; category: string; f
 // ADDRESS BOOK / CRM
 // ==========================================
 export async function createContact(data: { name: string; contactType: string; phone: string; email: string; address: string; country: string }) {
-  await prisma.contact.create({
+  const contact = await prisma.contact.create({
     data: {
       name: data.name,
       contactType: data.contactType,
@@ -291,6 +291,9 @@ export async function createContact(data: { name: string; contactType: string; p
   });
   revalidatePath("/address-book");
   revalidatePath("/crm");
+  revalidatePath("/purchasing");
+  revalidatePath("/sales");
+  return contact;
 }
 
 // ==========================================
@@ -301,7 +304,6 @@ export async function createFarm(data: { name: string; location: string; sizeHec
     data: {
       name: data.name,
       location: data.location,
-      sizeHectares: data.sizeHectares,
     },
   });
   revalidatePath("/setup");

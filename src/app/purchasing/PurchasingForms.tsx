@@ -1,14 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../_components/Modal";
 import { showToast } from "../_components/ToastProvider";
-import { createPurchaseOrder, approvePurchaseOrder } from "../_actions";
+import { createPurchaseOrder, approvePurchaseOrder, createContact } from "../_actions";
 
 export function NewPOButton({ contacts, farms }: { contacts: any[]; farms: any[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [lines, setLines] = useState([{ id: Date.now(), description: "", quantity: 1, unitPrice: 0 }]);
+  
+  const [localContacts, setLocalContacts] = useState(contacts);
+  const [isAddingSupplier, setIsAddingSupplier] = useState(false);
+  const [newSupplierName, setNewSupplierName] = useState("");
+  const [isCreatingContact, setIsCreatingContact] = useState(false);
+  const [selectedContactId, setSelectedContactId] = useState<number | "">(contacts.length > 0 ? contacts[0].id : "");
+
+  useEffect(() => {
+    setLocalContacts(contacts);
+  }, [contacts]);
 
   const addLine = () => setLines([...lines, { id: Date.now(), description: "", quantity: 1, unitPrice: 0 }]);
   const removeLine = (id: number) => setLines(lines.filter(l => l.id !== id));
@@ -18,6 +28,29 @@ export function NewPOButton({ contacts, farms }: { contacts: any[]; farms: any[]
   };
 
   const totalAmount = lines.reduce((acc, l) => acc + (l.quantity * l.unitPrice), 0);
+
+  async function handleAddSupplier() {
+    if (!newSupplierName.trim()) return;
+    setIsCreatingContact(true);
+    try {
+      const newContact = await createContact({
+        name: newSupplierName,
+        contactType: "Supplier",
+        phone: "",
+        email: "",
+        address: "",
+        country: "Zimbabwe",
+      });
+      showToast("Supplier added successfully");
+      setLocalContacts([...localContacts, newContact]);
+      setSelectedContactId(newContact.id);
+      setIsAddingSupplier(false);
+      setNewSupplierName("");
+    } catch (err) {
+      showToast("Failed to add supplier", "error");
+    }
+    setIsCreatingContact(false);
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -54,10 +87,25 @@ export function NewPOButton({ contacts, farms }: { contacts: any[]; farms: any[]
         <form onSubmit={handleSubmit}>
           <div className="form-grid-2">
             <div className="form-group">
-              <label className="form-label">Supplier</label>
-              <select name="contactId" className="form-select" required>
-                {contacts.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
+              <label className="form-label" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span>Supplier</span>
+                {!isAddingSupplier && (
+                  <button type="button" className="client-btn btn-sm" onClick={() => setIsAddingSupplier(true)} style={{ padding: "0.1rem 0.4rem", fontSize: "0.75rem", background: "transparent", color: "var(--primary)" }}>+ Add New</button>
+                )}
+              </label>
+              {isAddingSupplier ? (
+                <div style={{ display: "flex", gap: "0.5rem" }}>
+                  <input type="text" className="form-input" placeholder="Supplier name..." value={newSupplierName} onChange={(e) => setNewSupplierName(e.target.value)} autoFocus />
+                  <button type="button" className="btn btn-primary" onClick={handleAddSupplier} disabled={!newSupplierName.trim() || isCreatingContact}>{isCreatingContact ? "..." : "Save"}</button>
+                  <button type="button" className="btn client-btn" onClick={() => setIsAddingSupplier(false)}>✕</button>
+                  <input type="hidden" name="contactId" value={selectedContactId || ""} />
+                </div>
+              ) : (
+                <select name="contactId" className="form-select" value={selectedContactId} onChange={(e) => setSelectedContactId(Number(e.target.value))} required>
+                  <option value="" disabled>Select supplier...</option>
+                  {localContacts.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                </select>
+              )}
             </div>
             <div className="form-group">
               <label className="form-label">Delivery Farm</label>

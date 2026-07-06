@@ -33,11 +33,16 @@ export default async function Dashboard() {
   const pendingReceivable = pendingInvoicesAgg._sum.totalAmount ?? 0;
 
   // Chart data
-  const farmChartData = farms.map((f) => ({
-    name: f.name.split(" ")[0],
-    revenue: Math.round(f.salesInvoices.reduce((a, i) => a + i.totalAmount, 0)),
-    costs: Math.round(f.costs.reduce((a, c) => a + c.amount, 0)),
-  }));
+  const farmChartData = farms.map((f) => {
+    const revenue = Math.round(f.salesInvoices.reduce((a, i) => a + i.totalAmount, 0));
+    const costs = Math.round(f.costs.reduce((a, c) => a + c.amount, 0));
+    return {
+      name: f.name.split(" ")[0],
+      revenue,
+      costs,
+      profit: revenue - costs,
+    };
+  });
 
   const allInvoices = farms.flatMap((f) => f.salesInvoices);
   const outletData = ["Wholesale", "Butchery", "FuelStation", "Bakery", "Bar"].map((outlet) => ({

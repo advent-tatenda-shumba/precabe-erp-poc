@@ -17,7 +17,7 @@ export function FarmRevenueChart({ data }: { data: FarmData[] }) {
         <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
         <XAxis dataKey="name" tick={{ fontSize: 11 }} />
         <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
-        <Tooltip formatter={(v: number) => [`$${v.toLocaleString()}`, ""]} />
+        <Tooltip formatter={(v: any) => [`$${Number(v).toLocaleString()}`, ""]} />
         <Legend iconSize={10} wrapperStyle={{ fontSize: 11 }} />
         <Bar dataKey="revenue" name="Revenue" fill="#6366f1" radius={[4, 4, 0, 0]} />
         <Bar dataKey="costs" name="Costs" fill="#f59e0b" radius={[4, 4, 0, 0]} />
@@ -38,14 +38,14 @@ export function OutletPieChart({ data }: { data: OutletData[] }) {
           outerRadius={85}
           paddingAngle={3}
           dataKey="value"
-          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+          label={({ name, percent }: any) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
           labelLine={false}
         >
           {data.map((_entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip formatter={(v: number) => `$${v.toLocaleString()}`} />
+        <Tooltip formatter={(v: any) => `$${Number(v).toLocaleString()}`} />
       </PieChart>
     </ResponsiveContainer>
   );
