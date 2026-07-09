@@ -1,0 +1,71 @@
+/* ── Shared field wrapper ────────────────── */
+.wrapper { display: flex; flex-direction: column; gap: var(--ds-space-1); }
+
+.label {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-sm);
+  font-weight: 600;
+  color: var(--ds-text-secondary);
+}
+.required { color: var(--ds-danger); margin-left: 2px; }
+
+/* ── Base input / select / textarea ─────── */
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 0.6rem 0.875rem;
+  border: 1.5px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-base);
+  color: var(--ds-text-primary);
+  background: var(--ds-surface-raised);
+  outline: none;
+  line-height: 1.5;
+  transition: border-color var(--ds-transition), box-shadow var(--ds-transition),
+              background var(--ds-transition);
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+.input:focus, .select:focus, .textarea:focus {
+  border-color: var(--ds-accent);
+  background: var(--ds-surface);
+  box-shadow: 0 0 0 3px var(--ds-accent-ring);
+}
+
+.input:disabled, .select:disabled, .textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--ds-border);
+}
+
+.input::placeholder, .textarea::placeholder {
+  color: var(--ds-text-disabled);
+}
+
+/* ── Error state ─────────────────────────── */
+.hasError {
+  border-color: var(--ds-danger) !important;
+}
+.hasError:focus {
+  box-shadow: 0 0 0 3px var(--ds-danger-light) !important;
+}
+
+/* ── Select chevron ──────────────────────── */
+.select {
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  cursor: pointer;
+}
+
+/* ── Textarea ────────────────────────────── */
+.textarea { resize: vertical; min-height: 96px; }
+
+/* ── Hint & error messages ───────────────── */
+.hint  { font-family: var(--ds-font-body); font-size: var(--ds-text-xs); color: var(--ds-text-secondary); }
+.error { font-family: var(--ds-font-body); font-size: var(--ds-text-xs); color: var(--ds-danger); }

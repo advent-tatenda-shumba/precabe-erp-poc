@@ -1,0 +1,59 @@
+.tabBar {
+  display: flex;
+  border-bottom: 2px solid var(--ds-border);
+  margin-bottom: var(--ds-space-5);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.tabBar::-webkit-scrollbar { display: none; }
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  background: none;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -2px;
+  padding: 0.65rem 1.1rem;
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-sm);
+  font-weight: 600;
+  color: var(--ds-text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--ds-transition), border-color var(--ds-transition),
+              background var(--ds-transition-fast);
+  border-radius: var(--ds-radius-sm) var(--ds-radius-sm) 0 0;
+}
+
+.tab:hover:not(.active) {
+  color: var(--ds-text-primary);
+  background: var(--ds-surface-raised);
+}
+
+.active {
+  color: var(--ds-accent);
+  border-bottom-color: var(--ds-accent);
+}
+
+/* ── Count pill ──────────────────────────── */
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: var(--ds-accent-light);
+  color: var(--ds-accent);
+  border-radius: var(--ds-radius-full);
+  font-size: 0.62rem;
+  font-weight: 700;
+  transition: background var(--ds-transition), color var(--ds-transition);
+}
+.active .count {
+  background: var(--ds-accent);
+  color: var(--ds-text-inverse);
+}

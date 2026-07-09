@@ -1,0 +1,60 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-body);
+  font-weight: 600;
+  border: 2px solid transparent;
+  border-radius: var(--ds-radius-md);
+  cursor: pointer;
+  outline: none;
+  white-space: nowrap;
+  text-decoration: none;
+  line-height: 1;
+  position: relative;
+  transition: background var(--ds-transition), color var(--ds-transition),
+              border-color var(--ds-transition), transform var(--ds-transition-fast),
+              box-shadow var(--ds-transition);
+}
+
+/* ── Sizes ──────────────────────────────── */
+.sm  { padding: 0.35rem 0.75rem; font-size: var(--ds-text-xs);  border-radius: var(--ds-radius-sm); }
+.md  { padding: 0.55rem 1.1rem;  font-size: var(--ds-text-base); }
+.lg  { padding: 0.7rem 1.5rem;   font-size: var(--ds-text-md);  border-radius: var(--ds-radius-lg); }
+
+/* ── Primary ────────────────────────────── */
+.primary { background: var(--ds-accent); color: var(--ds-text-inverse); }
+.primary:hover:not(.disabled)  { background: var(--ds-accent-hover); }
+.primary:active:not(.disabled) { transform: scale(0.97); box-shadow: 0 0 0 4px var(--ds-accent-ring); }
+
+/* ── Secondary ──────────────────────────── */
+.secondary { background: var(--ds-accent-light); color: var(--ds-accent); }
+.secondary:hover:not(.disabled)  { background: var(--ds-accent); color: var(--ds-text-inverse); }
+.secondary:active:not(.disabled) { transform: scale(0.97); box-shadow: 0 0 0 4px var(--ds-accent-ring); }
+
+/* ── Ghost ──────────────────────────────── */
+.ghost { background: transparent; color: var(--ds-text-secondary); border-color: var(--ds-border); }
+.ghost:hover:not(.disabled)  { background: var(--ds-surface-raised); color: var(--ds-text-primary); border-color: var(--ds-border-strong); }
+.ghost:active:not(.disabled) { transform: scale(0.97); }
+
+/* ── Danger ─────────────────────────────── */
+.danger { background: var(--ds-danger-light); color: var(--ds-danger); border-color: var(--ds-danger-border); }
+.danger:hover:not(.disabled)  { background: var(--ds-danger); color: var(--ds-text-inverse); border-color: var(--ds-danger); }
+.danger:active:not(.disabled) { transform: scale(0.97); }
+
+/* ── States ─────────────────────────────── */
+.disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+.loading  { pointer-events: none; }
+.fullWidth { width: 100%; }
+
+/* ── Spinner ────────────────────────────── */
+.spinner {
+  width: 13px; height: 13px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: ds-spin 0.65s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes ds-spin { to { transform: rotate(360deg); } }

@@ -1,0 +1,30 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  padding: 0.22rem 0.6rem;
+  border-radius: var(--ds-radius-full);
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+/* ── Colours ─────────────────────────────── */
+.green  { background: var(--ds-success-light); color: var(--ds-success-text); }
+.orange { background: var(--ds-warning-light); color: var(--ds-warning-text); }
+.red    { background: var(--ds-danger-light);  color: var(--ds-danger-text);  }
+.blue   { background: var(--ds-info-light);    color: var(--ds-info-text);    }
+.gray   { background: rgba(100,116,139,0.10);  color: #475569;                }
+.purple { background: var(--ds-accent-light);  color: var(--ds-accent);       }
+
+[data-theme='dark'] .gray { color: #94a3b8; }
+
+/* ── Dot indicator ───────────────────────── */
+.dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
