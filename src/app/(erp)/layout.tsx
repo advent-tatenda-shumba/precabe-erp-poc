@@ -17,30 +17,26 @@ export default async function ErpLayout({ children }: { children: React.ReactNod
     : null;
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning>
-        <ToastProvider>
-          <div className="erp-container">
-            <Sidebar user={navUser} />
+    <ToastProvider>
+      <div className="erp-container">
+        <Sidebar user={navUser} />
 
-            <main className="erp-main">
-              <header className="erp-header">
-                <div className="header-title">
-                  <h1>Pricabe Enterprises ERP</h1>
-                  <p>Wisdom ERP · Multi-Farm Agribusiness Management</p>
-                </div>
-                <div className="header-actions">
-                  <span className="header-badge">Zimbabwe</span>
-                </div>
-              </header>
+        <main className="erp-main">
+          <header className="erp-header">
+            <div className="header-title">
+              <h1>Pricabe Enterprises ERP</h1>
+              <p>Wisdom ERP · Multi-Farm Agribusiness Management</p>
+            </div>
+            <div className="header-actions">
+              <span className="header-badge">Zimbabwe</span>
+            </div>
+          </header>
 
-              <div className="erp-content">
-                {children}
-              </div>
-            </main>
+          <div className="erp-content">
+            {children}
           </div>
-        </ToastProvider>
-      </body>
-    </html>
+        </main>
+      </div>
+    </ToastProvider>
   );
 }

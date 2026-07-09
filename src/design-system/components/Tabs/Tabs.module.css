@@ -30,12 +30,12 @@
 
 .tab:hover:not(.active) {
   color: var(--ds-text-primary);
-  background: var(--ds-surface-raised);
+  background: var(--ds-surface-hover);
 }
 
 .active {
-  color: var(--ds-accent);
-  border-bottom-color: var(--ds-accent);
+  color: var(--ds-accent-on-surface);
+  border-bottom-color: var(--ds-accent-on-surface);
 }
 
 /* ── Count pill ──────────────────────────── */
@@ -46,8 +46,8 @@
   min-width: 18px;
   height: 18px;
   padding: 0 5px;
-  background: var(--ds-accent-light);
-  color: var(--ds-accent);
+  background: rgba(0,0,0,0.06);
+  color: var(--ds-text-secondary);
   border-radius: var(--ds-radius-full);
   font-size: 0.62rem;
   font-weight: 700;
@@ -55,5 +55,76 @@
 }
 .active .count {
   background: var(--ds-accent);
-  color: var(--ds-text-inverse);
+  color: var(--ds-accent-dark);
 }
+
+[data-theme='dark'] .count {
+  background: rgba(255,255,255,0.08);
+  color: var(--ds-text-secondary);
+}
+[data-theme='dark'] .active .count {
+  background: var(--ds-accent);
+  color: var(--ds-accent-dark);
+}
+
+/* ── Icon slot ───────────────────────────── */
+.tabIcon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: opacity var(--ds-transition);
+}
+.active .tabIcon { opacity: 1; }
+
+/* ─────────────────────────────────────────────────────────────
+   Pills variant — segmented control style
+   ───────────────────────────────────────────────────────────── */
+.pills {
+  border-bottom: none;
+  background: #f0f0f0;
+  border-radius: var(--ds-radius-lg);
+  padding: 3px;
+  gap: 2px;
+  margin-bottom: var(--ds-space-5);
+  display: inline-flex;
+}
+
+[data-theme='dark'] .pills {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pills .tab {
+  border-bottom: none;
+  border-radius: var(--ds-radius-md);
+  margin-bottom: 0;
+  padding: 0.4rem 0.9rem;
+  font-size: var(--ds-text-sm);
+  color: var(--ds-text-secondary);
+  transition: background var(--ds-transition), color var(--ds-transition),
+              box-shadow var(--ds-transition);
+}
+
+.pills .tab:hover:not(.active) {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--ds-text-primary);
+}
+
+[data-theme='dark'] .pills .tab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pills .active {
+  background: var(--ds-surface);
+  color: var(--ds-text-primary);
+  border-bottom-color: transparent;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .pills .active {
+  background: var(--ds-surface-raised);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.40), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+/* count pill inherits from underline styles, no change needed in pills mode */

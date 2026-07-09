@@ -2,10 +2,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ds-space-2);
+  gap: 6px;
   font-family: var(--ds-font-body);
   font-weight: 600;
-  border: 2px solid transparent;
+  border: 1.5px solid transparent;
   border-radius: var(--ds-radius-md);
   cursor: pointer;
   outline: none;
@@ -19,23 +19,54 @@
 }
 
 /* ── Sizes ──────────────────────────────── */
-.sm  { padding: 0.35rem 0.75rem; font-size: var(--ds-text-xs);  border-radius: var(--ds-radius-sm); }
-.md  { padding: 0.55rem 1.1rem;  font-size: var(--ds-text-base); }
-.lg  { padding: 0.7rem 1.5rem;   font-size: var(--ds-text-md);  border-radius: var(--ds-radius-lg); }
+.xs {
+  height: var(--ds-btn-height-xs);
+  padding: 0 0.5rem;
+  font-size: 0.6875rem;
+  border-radius: var(--ds-radius-sm);
+  gap: 4px;
+}
+.sm {
+  height: var(--ds-btn-height-sm);
+  padding: 0 0.75rem;
+  font-size: var(--ds-text-sm);
+  border-radius: var(--ds-radius-md);
+}
+.md {
+  height: var(--ds-btn-height-md);
+  padding: 0 1rem;
+  font-size: var(--ds-text-base);
+}
+.lg {
+  height: var(--ds-btn-height-lg);
+  padding: 0 1.5rem;
+  font-size: var(--ds-text-md);
+  border-radius: var(--ds-radius-lg);
+  gap: 8px;
+}
 
-/* ── Primary ────────────────────────────── */
-.primary { background: var(--ds-accent); color: var(--ds-text-inverse); }
-.primary:hover:not(.disabled)  { background: var(--ds-accent-hover); }
-.primary:active:not(.disabled) { transform: scale(0.97); box-shadow: 0 0 0 4px var(--ds-accent-ring); }
+/* ── Icon slot ──────────────────────────── */
+.iconSlot {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  line-height: 0;
+}
 
-/* ── Secondary ──────────────────────────── */
-.secondary { background: var(--ds-accent-light); color: var(--ds-accent); }
-.secondary:hover:not(.disabled)  { background: var(--ds-accent); color: var(--ds-text-inverse); }
-.secondary:active:not(.disabled) { transform: scale(0.97); box-shadow: 0 0 0 4px var(--ds-accent-ring); }
+/* ── Primary ────────────────────────── */
+/* Light: Emerald Pine bg + Lime text  |  Dark: Lime bg + Pine text */
+.primary { background: var(--ds-btn-primary-bg); color: var(--ds-btn-primary-text); border-color: var(--ds-btn-primary-bg); font-weight: 700; }
+.primary:hover:not(.disabled)  { background: var(--ds-btn-primary-hover); border-color: var(--ds-btn-primary-hover); }
+.primary:active:not(.disabled) { transform: scale(0.97); box-shadow: 0 0 0 3px var(--ds-btn-primary-ring); }
+
+/* ── Secondary ───────────────────────── */
+.secondary { background: var(--ds-accent-light); color: var(--ds-accent-dark); border-color: transparent; font-weight: 600; }
+.secondary:hover:not(.disabled)  { background: var(--ds-accent); color: var(--ds-accent-dark); }
+.secondary:active:not(.disabled) { transform: scale(0.97); box-shadow: 0 0 0 3px var(--ds-accent-ring); }
 
 /* ── Ghost ──────────────────────────────── */
 .ghost { background: transparent; color: var(--ds-text-secondary); border-color: var(--ds-border); }
-.ghost:hover:not(.disabled)  { background: var(--ds-surface-raised); color: var(--ds-text-primary); border-color: var(--ds-border-strong); }
+.ghost:hover:not(.disabled)  { background: rgba(0,0,0,0.04); color: var(--ds-text-primary); border-color: var(--ds-border-strong); }
 .ghost:active:not(.disabled) { transform: scale(0.97); }
 
 /* ── Danger ─────────────────────────────── */
