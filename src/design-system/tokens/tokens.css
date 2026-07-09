@@ -7,11 +7,147 @@
    ============================================================ */
 
 :root {
-  /* ── Brand ───────────────────────────────────────────────── */
-  --ds-accent:           #6366f1;
-  --ds-accent-hover:     #4f46e5;
-  --ds-accent-light:     #e0e7ff;
-  --ds-accent-ring:      rgba(99, 102, 241, 0.30);
+  /* ── Brand: Emerald Pine · Lime Glow · Green Tea ────────── */
+  --ds-pine:             #084734;   /* Emerald Pine — dark anchor     */
+  --ds-lime:             #CEF17B;   /* Lime Glow    — primary accent  */
+  --ds-green-tea:        #CDEDB3;   /* Green Tea    — light tint      */
+
+  /* ── Accent (maps to Lime Glow as interactive brand color) ─ */
+  --ds-accent:           #CEF17B;   /* Lime Glow                      */
+  --ds-accent-hover:     #b8d96a;   /* Lime Glow — 10% darker         */
+  --ds-accent-dark:      #084734;   /* Emerald Pine — text on lime    */
+  --ds-accent-light:     #CDEDB3;   /* Green Tea — tinted backgrounds  */
+  --ds-accent-ring:      rgba(206, 241, 123, 0.35);
+
+  /* ── Button primary tokens (mode-aware, swapped per theme) ── */
+  --ds-btn-primary-bg:   #084734;   /* Light: Emerald Pine bg         */
+  --ds-btn-primary-text: #CEF17B;   /* Light: Lime Glow text          */
+  --ds-btn-primary-hover:#063828;   /* Light: Pine darker             */
+  --ds-btn-primary-ring: rgba(8, 71, 52, 0.22);
+
+  /* ── Accent-on-surface: foreground text colour on white/light bg ─ */
+  /* Lime (#CEF17B) is invisible on white — use Pine instead        */
+  --ds-accent-on-surface: #084734;  /* Light: Emerald Pine            */
+
+  /* ── Primary ramp (Emerald Pine → Lime Glow) ────────────── */
+  --ds-primary-50:  #f0fdf4;
+  --ds-primary-100: #CDEDB3;   /* Green Tea    */
+  --ds-primary-200: #a7e08a;
+  --ds-primary-300: #85d16a;
+  --ds-primary-400: #CEF17B;   /* Lime Glow    */
+  --ds-primary-500: #b8d96a;
+  --ds-primary-600: #6aaf44;
+  --ds-primary-700: #2e7a35;
+  --ds-primary-800: #0f5c3a;
+  --ds-primary-900: #084734;   /* Emerald Pine */
+
+  /* ── Orange ramp ─────────────────────────────────────────── */
+  --ds-orange-50:  #fff7ed;
+  --ds-orange-100: #ffedd5;
+  --ds-orange-200: #fed7aa;
+  --ds-orange-300: #fdba74;
+  --ds-orange-400: #fb923c;
+  --ds-orange-500: #f97316;
+  --ds-orange-600: #ea580c;
+  --ds-orange-700: #c2410c;
+  --ds-orange-800: #9a3412;
+  --ds-orange-900: #7c2d12;
+
+  /* ── Yellow ramp ─────────────────────────────────────────── */
+  --ds-yellow-50:  #fefce8;
+  --ds-yellow-100: #fef9c3;
+  --ds-yellow-200: #fef08a;
+  --ds-yellow-300: #fde047;
+  --ds-yellow-400: #facc15;
+  --ds-yellow-500: #eab308;
+  --ds-yellow-600: #ca8a04;
+  --ds-yellow-700: #a16207;
+  --ds-yellow-800: #854d0e;
+  --ds-yellow-900: #713f12;
+
+  /* ── Red ramp ────────────────────────────────────────────── */
+  --ds-red-50:  #fff1f2;
+  --ds-red-100: #ffe4e6;
+  --ds-red-200: #fecdd3;
+  --ds-red-300: #fda4af;
+  --ds-red-400: #fb7185;
+  --ds-red-500: #f43f5e;
+  --ds-red-600: #e11d48;
+  --ds-red-700: #be123c;
+  --ds-red-800: #9f1239;
+  --ds-red-900: #881337;
+
+  /* ── Emerald ramp ────────────────────────────────────────── */
+  --ds-emerald-50:  #ecfdf5;
+  --ds-emerald-100: #d1fae5;
+  --ds-emerald-200: #a7f3d0;
+  --ds-emerald-300: #6ee7b7;
+  --ds-emerald-400: #34d399;
+  --ds-emerald-500: #10b981;
+  --ds-emerald-600: #059669;
+  --ds-emerald-700: #047857;
+  --ds-emerald-800: #065f46;
+  --ds-emerald-900: #064e3b;
+
+  /* ── Blue ramp ───────────────────────────────────────────── */
+  --ds-blue-50:  #eff6ff;
+  --ds-blue-100: #dbeafe;
+  --ds-blue-200: #bfdbfe;
+  --ds-blue-300: #93c5fd;
+  --ds-blue-400: #60a5fa;
+  --ds-blue-500: #3b82f6;
+  --ds-blue-600: #2563eb;
+  --ds-blue-700: #1d4ed8;
+  --ds-blue-800: #1e40af;
+  --ds-blue-900: #1e3a8a;
+
+  /* ── Purple ramp ─────────────────────────────────────────── */
+  --ds-purple-50:  #faf5ff;
+  --ds-purple-100: #f3e8ff;
+  --ds-purple-200: #e9d5ff;
+  --ds-purple-300: #d8b4fe;
+  --ds-purple-400: #c084fc;
+  --ds-purple-500: #a855f7;
+  --ds-purple-600: #9333ea;
+  --ds-purple-700: #7e22ce;
+  --ds-purple-800: #6b21a8;
+  --ds-purple-900: #581c87;
+
+  /* ── Pink ramp ───────────────────────────────────────────── */
+  --ds-pink-50:  #fdf2f8;
+  --ds-pink-100: #fce7f3;
+  --ds-pink-200: #fbcfe8;
+  --ds-pink-300: #f9a8d4;
+  --ds-pink-400: #f472b6;
+  --ds-pink-500: #ec4899;
+  --ds-pink-600: #db2777;
+  --ds-pink-700: #be185d;
+  --ds-pink-800: #9d174d;
+  --ds-pink-900: #831843;
+
+  /* ── Cyan ramp ───────────────────────────────────────────── */
+  --ds-cyan-50:  #ecfeff;
+  --ds-cyan-100: #cffafe;
+  --ds-cyan-200: #a5f3fc;
+  --ds-cyan-300: #67e8f9;
+  --ds-cyan-400: #22d3ee;
+  --ds-cyan-500: #06b6d4;
+  --ds-cyan-600: #0891b2;
+  --ds-cyan-700: #0e7490;
+  --ds-cyan-800: #155e75;
+  --ds-cyan-900: #164e63;
+
+  /* ── Teal ramp ───────────────────────────────────────────── */
+  --ds-teal-50:  #f0fdfa;
+  --ds-teal-100: #ccfbf1;
+  --ds-teal-200: #99f6e4;
+  --ds-teal-300: #5eead4;
+  --ds-teal-400: #2dd4bf;
+  --ds-teal-500: #14b8a6;
+  --ds-teal-600: #0d9488;
+  --ds-teal-700: #0f766e;
+  --ds-teal-800: #115e59;
+  --ds-teal-900: #134e4a;
 
   /* ── Semantic: Success ───────────────────────────────────── */
   --ds-success:          #10b981;
@@ -38,12 +174,14 @@
   --ds-info-border:      rgba(59, 130, 246, 0.25);
 
   /* ── Surfaces ────────────────────────────────────────────── */
-  --ds-bg:               #f0f4f8;
-  --ds-bg-gradient:      linear-gradient(135deg, #e0e7ff 0%, #f0f4f8 100%);
+  --ds-bg:               #f5f7fa;
+  --ds-bg-gradient:      linear-gradient(135deg, #e0e7ff 0%, #f5f7fa 100%);
   --ds-surface:          #ffffff;
-  --ds-surface-raised:   #f8fafc;
-  --ds-border:           #e2e8f0;
-  --ds-border-strong:    #cbd5e1;
+  --ds-surface-raised:   #f8f9fb;
+  --ds-surface-hover:    #f2f4f7;
+  --ds-border:           #e8ecf0;
+  --ds-border-strong:    #c9d1dc;
+  --ds-border-focus:     rgba(79, 70, 229, 0.50);
 
   /* ── Text ────────────────────────────────────────────────── */
   --ds-text-primary:     #1e293b;
@@ -53,10 +191,11 @@
 
   /* ── Elevation ───────────────────────────────────────────── */
   --ds-shadow-xs:        0 1px 3px rgba(0, 0, 0, 0.06);
-  --ds-shadow-sm:        0 2px 8px rgba(0, 0, 0, 0.06);
-  --ds-shadow-md:        0 8px 24px rgba(0, 0, 0, 0.08);
-  --ds-shadow-lg:        0 16px 48px rgba(0, 0, 0, 0.10);
-  --ds-shadow-xl:        0 24px 64px rgba(0, 0, 0, 0.15);
+  --ds-shadow-sm:        0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --ds-shadow-card:      0 1px 4px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --ds-shadow-md:        0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --ds-shadow-lg:        0 12px 36px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --ds-shadow-xl:        0 20px 56px rgba(0, 0, 0, 0.13), 0 4px 12px rgba(0, 0, 0, 0.08);
 
   /* ── Border Radius ───────────────────────────────────────── */
   --ds-radius-xs:        4px;
@@ -90,6 +229,12 @@
   --ds-text-2xl:         1.5rem;    /* 24px */
   --ds-text-3xl:         1.875rem;  /* 30px */
 
+  /* ── Button height scale ─────────────────────────────────── */
+  --ds-btn-height-xs:    24px;
+  --ds-btn-height-sm:    30px;
+  --ds-btn-height-md:    36px;
+  --ds-btn-height-lg:    44px;
+
   /* ── Transitions ─────────────────────────────────────────── */
   --ds-transition-fast:  100ms ease;
   --ds-transition:       150ms ease;
@@ -104,10 +249,20 @@
 
 /* ── Dark Mode Overrides ─────────────────────────────────────── */
 [data-theme='dark'] {
-  --ds-accent:           #818cf8;
-  --ds-accent-hover:     #6366f1;
-  --ds-accent-light:     #1e1b4b;
-  --ds-accent-ring:      rgba(129, 140, 248, 0.30);
+  --ds-accent:           #b8d96a;   /* Lime slightly toned down on dark */
+  --ds-accent-hover:     #a0c255;
+  --ds-accent-dark:      #084734;
+  --ds-accent-light:     #1a3320;   /* Pine-tinted dark tint           */
+  --ds-accent-ring:      rgba(184, 217, 106, 0.30);
+
+  /* Button flips: Lime bg + Pine text in dark mode */
+  --ds-btn-primary-bg:   #b8d96a;
+  --ds-btn-primary-text: #084734;
+  --ds-btn-primary-hover:#a0c255;
+  --ds-btn-primary-ring: rgba(184, 217, 106, 0.35);
+
+  /* In dark mode, Lime is readable on dark surfaces */
+  --ds-accent-on-surface: #b8d96a;  /* Dark: Lime Glow (toned)        */
 
   --ds-success-text:     #34d399;
   --ds-success-light:    rgba(16, 185, 129, 0.12);
@@ -129,8 +284,10 @@
   --ds-bg-gradient:      linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   --ds-surface:          #1e293b;
   --ds-surface-raised:   #0f172a;
+  --ds-surface-hover:    #263348;
   --ds-border:           #334155;
   --ds-border-strong:    #475569;
+  --ds-border-focus:     rgba(184, 217, 106, 0.55);
 
   --ds-text-primary:     #f8fafc;
   --ds-text-secondary:   #94a3b8;

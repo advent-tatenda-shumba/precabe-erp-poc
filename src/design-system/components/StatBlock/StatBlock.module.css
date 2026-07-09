@@ -35,7 +35,7 @@
   line-height: 1;
 }
 
-.accent .value { color: var(--ds-accent); }
+.accent .value { color: var(--ds-accent-on-surface); }
 
 .sub {
   font-family: var(--ds-font-body);
