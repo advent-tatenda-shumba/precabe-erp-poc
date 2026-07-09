@@ -17,8 +17,8 @@ export default async function ErpLayout({ children }: { children: React.ReactNod
     : null;
 
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <ToastProvider>
           <div className="erp-container">
             <Sidebar user={navUser} />
