@@ -67,3 +67,57 @@ export function NewCropCycleButton({ farms, crops }: { farms: any[]; crops: any[
     </>
   );
 }
+
+import { logFieldActivity } from "../../_actions/agriculture";
+
+export function LogActivityButton({ cycleId, inventoryItems }: { cycleId: number; inventoryItems: any[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsLoading(true);
+    const formData = new FormData(e.currentTarget);
+    formData.append("cropCycleId", cycleId.toString());
+    try {
+      await logFieldActivity(formData);
+      showToast("Activity logged successfully", "success");
+      setIsOpen(false);
+    } catch (err) {
+      showToast("Failed to log activity. Check inventory.", "error");
+    }
+    setIsLoading(false);
+  }
+
+  return (
+    <>
+      <button className="btn client-btn" onClick={() => setIsOpen(true)} style={{ padding: "0.25rem 0.5rem", fontSize: "0.875rem" }}>Log Activity</button>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Log Field Activity" size="sm">
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">Activity Description</label>
+            <input name="description" type="text" className="form-input" placeholder="e.g. Applied Glyphosate" required />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Input / Chemical</label>
+            <select name="itemId" className="form-select" required>
+              {inventoryItems.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name} (In Stock: {item.currentStock} {item.unit})
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group">
+            <label className="form-label">Quantity Used</label>
+            <input name="quantity" type="number" step="0.1" className="form-input" required />
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn client-btn" onClick={() => setIsOpen(false)} style={{ background: "transparent", color: "var(--text-primary)" }}>Cancel</button>
+            <button type="submit" className="btn btn-primary" disabled={isLoading}>{isLoading ? "Saving..." : "Log Activity"}</button>
+          </div>
+        </form>
+      </Modal>
+    </>
+  );
+}

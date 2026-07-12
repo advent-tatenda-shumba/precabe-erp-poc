@@ -1,0 +1,9 @@
+/* ── Grid layout helpers ─────────────────── */
+.group { display: flex; flex-direction: column; gap: var(--ds-space-1); }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-space-4); }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--ds-space-4); }
+
+@media (max-width: 640px) {
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+}

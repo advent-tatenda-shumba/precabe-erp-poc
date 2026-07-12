@@ -1,0 +1,73 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  cursor: pointer;
+  user-select: none;
+}
+
+.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Track ───────────────────────────────── */
+.track {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  border-radius: var(--ds-radius-full);
+  border: none;
+  background: #d1d5db;
+  cursor: pointer;
+  transition: background var(--ds-transition), box-shadow var(--ds-transition);
+  flex-shrink: 0;
+  outline: none;
+  padding: 0;
+}
+
+.track:focus-visible {
+  box-shadow: 0 0 0 3px var(--ds-accent-ring);
+}
+
+.on {
+  background: var(--ds-accent);
+}
+
+/* ── Thumb ───────────────────────────────── */
+.thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.20), 0 1px 1px rgba(0,0,0,0.10);
+  transition: transform var(--ds-transition-slow);
+}
+
+.on .thumb {
+  transform: translateX(18px);
+}
+
+/* ── Label ───────────────────────────────── */
+.label {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-base);
+  font-weight: 500;
+  color: var(--ds-text-primary);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+[data-theme='dark'] .track:not(.on) { background: #374151; }

@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* ── Design System tokens (--ds-* custom properties) ── */
+@import '../design-system/tokens/tokens.css';
+
 :root {
   --bg-color: #f0f4f8;
   --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #f0f4f8 100%);
@@ -1101,4 +1104,87 @@ body {
   font-size: 0.78rem;
   color: rgba(248,250,252,0.4);
   z-index: 20;
+}
+
+/* -- FUEL APP RESPONSIVE -- */
+.fuel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+@media (max-width: 768px) {
+  .fuel-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .fuel-header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+.fuel-header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.fuel-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.fuel-filter-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+.fuel-filter-bar > * {
+  flex: 1;
+  min-width: 120px;
+}
+
+.fuel-tx-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.fuel-tx-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+@media (max-width: 600px) {
+  .fuel-tx-details {
+    align-items: flex-start;
+    width: 100%;
+  }
+  .fuel-tx-main-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+.fuel-btn {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.fuel-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.fuel-btn:active {
+  transform: translateY(0) scale(0.98);
 }

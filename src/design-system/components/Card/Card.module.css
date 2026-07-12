@@ -1,0 +1,59 @@
+.card {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Padding variants ────────────────────── */
+.padNone { padding: 0; }
+.padSm   { padding: var(--ds-space-4); }
+.padMd   { padding: var(--ds-space-5); }
+.padLg   { padding: var(--ds-space-6); }
+
+/* ── Accent stripe ───────────────────────── */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--ds-radius-lg) var(--ds-radius-lg) 0 0;
+}
+.accentNone::before   { display: none; }
+.accentDefault::before { background: var(--ds-accent); }
+.accentGreen::before  { background: var(--ds-success); }
+.accentOrange::before { background: var(--ds-warning); }
+.accentRed::before    { background: var(--ds-danger);  }
+.accentBlue::before   { background: var(--ds-info);    }
+.accentPurple::before { background: var(--ds-accent);  }
+
+/* ── Hoverable (link-style cards) ────────── */
+.hoverable {
+  display: block;
+  text-decoration: none;
+  transition: transform var(--ds-transition-slow), box-shadow var(--ds-transition-slow),
+              border-color var(--ds-transition);
+  cursor: pointer;
+}
+.hoverable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ds-shadow-md);
+  border-color: var(--ds-accent-light);
+}
+.hoverable:active { transform: translateY(-1px); }
+
+/* ── CardHeader sub-component ────────────── */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--ds-space-4);
+}
+.title {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-md);
+  font-weight: 700;
+  color: var(--ds-text-primary);
+}

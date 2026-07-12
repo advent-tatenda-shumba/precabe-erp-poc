@@ -41,6 +41,20 @@ async function main() {
       password: HASH,
       role: "Viewer",
     },
+    {
+      name: "Retail Cashier",
+      email: "cashier@pricabe.co.zw",
+      password: HASH,
+      role: "Cashier",
+      farmId: 1, // Assign to first farm for demo
+    },
+    {
+      name: "Fuel Dispatcher",
+      email: "fuel@pricabe.co.zw",
+      password: HASH,
+      role: "Fuel Attendant",
+      farmId: 1,
+    },
   ];
 
   for (const u of users) {

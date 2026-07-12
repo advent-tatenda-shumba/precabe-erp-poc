@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { NewCropCycleButton } from "./AgricultureForms";
+import { NewCropCycleButton, LogActivityButton } from "./AgricultureForms";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +21,10 @@ export default async function Agriculture() {
   
   const farms = await prisma.farm.findMany({ select: { id: true, name: true } });
   const crops = await prisma.crop.findMany({ select: { id: true, name: true, farmId: true } });
+  const agriculturalInputs = await prisma.inventoryItem.findMany({
+    where: { category: "Agricultural Inputs", currentStock: { gt: 0 } },
+    select: { id: true, name: true, currentStock: true, unit: true }
+  });
 
   const totalHectares = cycles.reduce((a, c) => a + c.hectaresPlanted, 0);
   const activeCycles = cycles.filter((c) => c.stage !== "Complete").length;
@@ -72,6 +76,7 @@ export default async function Agriculture() {
                 <th>Expected Harvest</th>
                 <th>Stage</th>
                 <th>Costs (USD)</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -91,6 +96,9 @@ export default async function Agriculture() {
                         <span className={`badge ${stageBadge(cycle.stage)}`}>{cycle.stage}</span>
                       </td>
                       <td>${totalCosts.toLocaleString()}</td>
+                      <td>
+                        <LogActivityButton cycleId={cycle.id} inventoryItems={agriculturalInputs} />
+                      </td>
                     </tr>
                   );
                 })}
