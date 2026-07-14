@@ -72,7 +72,8 @@ export default function PosClient({ items, farmName, userName }: PosClientProps)
     try {
       // Execute transaction on server
       const result = await checkoutAction(
-        cart.map((c) => ({ itemId: c.item.id, qty: c.qty, price: c.item.unitCost * 2 }))
+        cart.map((c) => ({ itemId: c.item.id, qty: c.qty, price: c.item.unitCost * 2 })),
+        "Retail"
       );
       
       if (!result.error) {

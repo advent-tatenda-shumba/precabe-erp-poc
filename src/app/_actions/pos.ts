@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 
-export async function checkoutAction(cart: { itemId: number; qty: number; price: number }[]) {
+export async function checkoutAction(cart: { itemId: number; qty: number; price: number }[], outlet: string = "Retail") {
   const user = await getCurrentUser();
   if (!user || user.role !== "Cashier" || !user.farmId) {
     return { error: "Unauthorized" };
@@ -19,7 +19,7 @@ export async function checkoutAction(cart: { itemId: number; qty: number; price:
         data: {
           invoiceNumber,
           farmId: user.farmId!,
-          outlet: "Retail", // Could be dynamic based on the cashier's specific outlet
+          outlet: outlet,
           status: "Paid",
           totalAmount,
           lines: {

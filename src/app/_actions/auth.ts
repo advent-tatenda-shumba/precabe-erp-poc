@@ -31,9 +31,11 @@ export async function loginAction(formData: FormData) {
 
   await createSession(user.id);
 
-  if (user.role === "Cashier") {
+  if (user.role === "Cashier" || user.role === "Retail Cashier") {
     redirect("/pos");
-  } else if (user.role === "Fuel Attendant") {
+  } else if (user.role === "Bar Cashier") {
+    redirect("/bar");
+  } else if (user.role === "Fuel Attendant" || user.role === "Fuel Guy") {
     redirect("/fuel");
   } else {
     redirect("/");
