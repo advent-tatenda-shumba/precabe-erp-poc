@@ -2,10 +2,11 @@
 
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { revalidatePath } from "next/cache";
 
 export async function checkoutAction(cart: { itemId: number; qty: number; price: number }[], outlet: string = "Retail") {
   const user = await getCurrentUser();
-  if (!user || user.role !== "Cashier" || !user.farmId) {
+  if (!user || !["Cashier", "Retail Cashier", "Bar Cashier"].includes(user.role) || !user.farmId) {
     return { error: "Unauthorized" };
   }
 
@@ -55,6 +56,8 @@ export async function checkoutAction(cart: { itemId: number; qty: number; price:
       }
     });
 
+    revalidatePath("/pos");
+    revalidatePath("/bar");
     return { success: true };
   } catch (error) {
     console.error(error);

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { ExportCSVButton } from "@/app/_components/ExportCSVButton";
 
 export const dynamic = "force-dynamic";
 
@@ -52,7 +53,12 @@ export default async function Reports() {
       <div className="card">
         <div className="card-header">
           <h3> Profit & Loss — By Farm (USD)</h3>
-          <button className="client-btn btn-sm"> Export CSV</button>
+          <ExportCSVButton 
+            headers={["Farm", "Location", "Revenue", "Costs", "Profit", "Margin %"]}
+            rows={farmPL.map(f => [f.name, f.location, f.revenue, f.costs, f.profit, f.margin])}
+            filename="farm_profit_loss"
+            label="Export CSV"
+          />
         </div>
         <div className="table-responsive">
           <table className="table">

@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 
-export async function logFuelAction({ tankId, litres, reference }: { tankId: number; litres: number; reference: string }) {
+export async function logFuelAction({ tankId, litres, txType, reference }: { tankId: number; litres: number; txType: string; reference: string }) {
   const user = await getCurrentUser();
   if (!user || user.role !== "Fuel Attendant" || !user.farmId) {
     return { error: "Unauthorized" };
@@ -15,7 +15,7 @@ export async function logFuelAction({ tankId, litres, reference }: { tankId: num
       return { error: "Invalid tank" };
     }
 
-    if (tank.currentLitres < litres) {
+    if (txType === "Dispatch" && tank.currentLitres < litres) {
       return { error: "Not enough fuel in tank." };
     }
 
@@ -23,15 +23,17 @@ export async function logFuelAction({ tankId, litres, reference }: { tankId: num
       await tx.fuelTransaction.create({
         data: {
           tankId,
-          txType: "Dispatch",
+          txType: txType,
           litres,
           reference,
         }
       });
 
+      const updatedLitres = txType === "Receipt" ? tank.currentLitres + litres : tank.currentLitres - litres;
+
       await tx.fuelTank.update({
         where: { id: tankId },
-        data: { currentLitres: tank.currentLitres - litres }
+        data: { currentLitres: updatedLitres }
       });
     });
 

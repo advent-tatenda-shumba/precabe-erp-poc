@@ -49,3 +49,33 @@ export function RunPayrollButton() {
     </>
   );
 }
+
+export function ExportPayslipsButton({ data }: { data: any[] }) {
+  const handleExport = () => {
+    const headers = ["Name", "Role", "Type", "Farm", "Gross (USD)", "PAYE Est.", "NSSA Est.", "Net Est."];
+    const rows = data.map(r => [
+      `"${r.name}"`, 
+      `"${r.role}"`, 
+      `"${r.type}"`, 
+      `"${r.farm}"`, 
+      r.gross.toFixed(2), 
+      r.paye.toFixed(2), 
+      r.nssa.toFixed(2), 
+      r.net.toFixed(2)
+    ]);
+    const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Payroll_Roster_${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  return (
+    <button className="client-btn btn-sm" onClick={handleExport}>
+      Export Payslips (CSV)
+    </button>
+  );
+}

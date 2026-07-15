@@ -66,7 +66,60 @@ async function main() {
     });
   }
 
-  console.log("POS Data seeded successfully.");
+  console.log("Retail POS Data seeded successfully.");
+
+  // Create Bar Store Warehouse if not exists
+  let barWarehouse = await prisma.warehouse.findFirst({
+    where: { name: "Bar Store", farmId: farm.id }
+  });
+
+  if (!barWarehouse) {
+    barWarehouse = await prisma.warehouse.create({
+      data: {
+        name: "Bar Store",
+        farmId: farm.id
+      }
+    });
+  }
+
+  const barItems = [
+    { name: "Castle Lite 330ml", code: "BAR-001", price: 1.00, stock: 120 },
+    { name: "Zambezi Lager 330ml", code: "BAR-002", price: 1.00, stock: 95 },
+    { name: "Heineken 330ml", code: "BAR-003", price: 1.50, stock: 60 },
+    { name: "Jameson Irish Whiskey 750ml", code: "BAR-004", price: 15.00, stock: 12 },
+    { name: "Glenfiddich 12yr 750ml", code: "BAR-005", price: 30.00, stock: 5 },
+    { name: "Gordon's London Dry Gin 750ml", code: "BAR-006", price: 8.00, stock: 18 },
+    { name: "Smirnoff Vodka 750ml", code: "BAR-007", price: 7.00, stock: 24 },
+    { name: "Jagermeister 750ml", code: "BAR-008", price: 12.00, stock: 15 },
+    { name: "Four Cousins Sweet Red 750ml", code: "BAR-009", price: 4.50, stock: 30 },
+    { name: "Savanna Dry Cider 330ml", code: "BAR-010", price: 1.25, stock: 80 },
+    { name: "Hunter's Gold Cider 330ml", code: "BAR-011", price: 1.25, stock: 85 },
+    { name: "Red Bull Energy 250ml", code: "BAR-012", price: 1.50, stock: 40 },
+    { name: "Coca-Cola Mixer 330ml", code: "BAR-013", price: 0.50, stock: 150 },
+    { name: "Tonic Water Mixer 330ml", code: "BAR-014", price: 0.50, stock: 120 },
+    { name: "Amarula Cream Liqueur 750ml", code: "BAR-015", price: 10.00, stock: 9 }
+  ];
+
+  for (const item of barItems) {
+    await prisma.inventoryItem.upsert({
+      where: { itemCode: item.code },
+      update: {
+        currentStock: item.stock,
+        unitCost: item.price
+      },
+      create: {
+        itemCode: item.code,
+        name: item.name,
+        category: "Beverage",
+        unit: "Item",
+        currentStock: item.stock,
+        unitCost: item.price,
+        warehouseId: barWarehouse.id
+      }
+    });
+  }
+
+  console.log("Bar Data seeded successfully.");
 }
 
 main()

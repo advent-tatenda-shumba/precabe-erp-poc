@@ -61,7 +61,7 @@ export default function PosClient({ items, farmName, userName }: PosClientProps)
   };
 
   // Prices are 2x cost for retail demo
-  const total = cart.reduce((acc, c) => acc + c.item.unitCost * 2 * c.qty, 0); 
+  const total = cart.reduce((acc, c) => acc + (c.item.sellPrice || 0) * c.qty, 0); 
   const cashNum = parseFloat(cashProvided) || 0;
   const change = Math.max(0, cashNum - total);
 
@@ -77,9 +77,8 @@ export default function PosClient({ items, farmName, userName }: PosClientProps)
       );
       
       if (!result.error) {
-        // Save receipt data
         setLastReceipt({
-          items: cart.map(c => ({ name: c.item.name, qty: c.qty, price: c.item.unitCost * 2, total: c.qty * c.item.unitCost * 2 })),
+          items: cart.map(c => ({ name: c.item.name, qty: c.qty, price: (c.item.sellPrice || 0), total: c.qty * (c.item.sellPrice || 0) })),
           total,
           cash: cashNum,
           change,
@@ -139,7 +138,7 @@ export default function PosClient({ items, farmName, userName }: PosClientProps)
                     {item.name}
                   </div>
                   <div style={{ fontSize: "1rem", fontWeight: "bold", color: "#4f46e5", marginBottom: "0.5rem" }}>
-                    ${(item.unitCost * 2).toFixed(2)}
+                    ${((item.sellPrice || 0)).toFixed(2)}
                   </div>
                   <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>
                     Stock: {item.currentStock}
@@ -169,7 +168,7 @@ export default function PosClient({ items, farmName, userName }: PosClientProps)
             {cart.map(c => (
               <div key={c.item.id}>
                 <div style={{ fontSize: "0.875rem", fontWeight: "bold", color: "#1f2937" }}>{c.item.name}</div>
-                <div style={{ fontSize: "0.75rem", color: "#4b5563", marginBottom: "0.5rem" }}>${(c.item.unitCost * 2).toFixed(2)}</div>
+                <div style={{ fontSize: "0.75rem", color: "#4b5563", marginBottom: "0.5rem" }}>${((c.item.sellPrice || 0)).toFixed(2)}</div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                   <span style={{ fontSize: "0.65rem", color: "#9ca3af", width: "40px" }}>shop1</span>
                   <button onClick={() => updateCartQty(c.item.id, c.qty - 1)} style={{ width: "24px", height: "24px", border: "1px solid #d1d5db", backgroundColor: "white", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>-</button>

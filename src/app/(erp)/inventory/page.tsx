@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { AddStockButton, TransferStockButton, LogFuelDeliveryButton } from "./InventoryForms";
+import { AddStockButton, TransferStockButton, LogFuelDeliveryButton, AdjustPriceButton, CreateItemButton } from "./InventoryForms";
 
 export const dynamic = "force-dynamic";
 
@@ -31,9 +31,12 @@ export default async function Inventory() {
 
   return (
     <div>
-      <div className="page-header">
-        <h2>Inventory Management</h2>
-        <p>Multi-location stock tracking across all farms — real-time levels, fuel tanks, and movements.</p>
+      <div className="page-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div>
+          <h2>Inventory Management</h2>
+          <p>Multi-location stock tracking across all farms — real-time levels, fuel tanks, and movements.</p>
+        </div>
+        <CreateItemButton warehouses={warehouses} />
       </div>
 
       {/* Summary */}
@@ -107,9 +110,12 @@ export default async function Inventory() {
                     <th>Unit</th>
                     <th>On Hand</th>
                     <th>Reorder Level</th>
-                    <th>Unit Cost</th>
+                    <th>Cost Price</th>
+                    <th>Sell Price</th>
+                    <th>Margin</th>
                     <th>Total Value</th>
                     <th>Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -124,8 +130,19 @@ export default async function Inventory() {
                         <td><strong>{item.currentStock.toLocaleString()}</strong></td>
                         <td>{item.reorderLevel}</td>
                         <td>${item.unitCost.toFixed(2)}</td>
+                        <td><strong style={{ color: "#f59e0b" }}>${(item.sellPrice || 0).toFixed(2)}</strong></td>
+                        <td>
+                          {(item.sellPrice || 0) > item.unitCost ? (
+                            <span style={{ color: "var(--success)", fontWeight: 600 }}>
+                              +{Math.round((((item.sellPrice || 0) - item.unitCost) / item.unitCost) * 100)}%
+                            </span>
+                          ) : (
+                            <span style={{ color: "var(--danger)", fontWeight: 600 }}>0%</span>
+                          )}
+                        </td>
                         <td>${(item.currentStock * item.unitCost).toFixed(0)}</td>
                         <td><span className={`badge ${st.cls}`}>{st.label}</span></td>
+                        <td><AdjustPriceButton item={item} /></td>
                       </tr>
                     );
                   })}

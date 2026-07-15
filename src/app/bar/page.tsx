@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export default async function BarPage() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "Cashier") {
+  if (!user || user.role !== "Bar Cashier") {
     redirect("/login");
   }
 
@@ -23,7 +23,17 @@ export default async function BarPage() {
   }
 
   const items = await prisma.inventoryItem.findMany({
-    where: { warehouse: { farmId: farm.id } },
+    where: { 
+      warehouse: { farmId: farm.id },
+      category: "Beverage"
+    },
+  });
+
+  const recentSales = await prisma.salesInvoice.findMany({
+    where: { farmId: farm.id, outlet: "Bar" },
+    orderBy: { date: "desc" },
+    take: 15,
+    include: { lines: true }
   });
 
   return (
@@ -38,7 +48,7 @@ export default async function BarPage() {
       
       {/* Client Component */}
       <div style={{ flex: 1, overflow: "hidden" }}>
-        <BarClient items={items} farmName={farm.name} userName={user.name} />
+        <BarClient items={items} recentSales={recentSales} farmName={farm.name} userName={user.name} />
       </div>
     </div>
   );

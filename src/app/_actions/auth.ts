@@ -37,6 +37,8 @@ export async function loginAction(formData: FormData) {
     redirect("/bar");
   } else if (user.role === "Fuel Attendant" || user.role === "Fuel Guy") {
     redirect("/fuel");
+  } else if (user.role === "HR Manager") {
+    redirect("/hr");
   } else {
     redirect("/");
   }

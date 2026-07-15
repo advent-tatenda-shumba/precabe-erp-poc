@@ -99,6 +99,13 @@ model Staff {
   farm           Farm          @relation(fields: [farmId], references: [id])
   payrollLines   PayrollLine[]
   costAllocation String        @default("Farm")
+  phone          String?
+  email          String?
+  address        String?
+  nextOfKin      String?
+  status         String        @default("Active")
+  hireDate       DateTime      @default(now())
+  notes          String?
 }
 
 model Payroll {
@@ -143,6 +150,7 @@ model InventoryItem {
   reorderLevel   Float           @default(0)
   currentStock   Float           @default(0)
   unitCost       Float           @default(0)
+  sellPrice      Float           @default(0)
   warehouseId    Int
   warehouse      Warehouse       @relation(fields: [warehouseId], references: [id])
   stockMovements StockMovement[]

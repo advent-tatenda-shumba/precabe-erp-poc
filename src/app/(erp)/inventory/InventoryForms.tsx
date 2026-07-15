@@ -171,3 +171,137 @@ export function LogFuelDeliveryButton({ tanks }: { tanks: any[] }) {
     </>
   );
 }
+
+import { adjustPriceAction } from "../../_actions/inventory";
+
+export function AdjustPriceButton({ item }: { item: any }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsLoading(true);
+    const fd = new FormData(e.currentTarget);
+    try {
+      await adjustPriceAction(item.id, Number(fd.get("newCostPrice")), Number(fd.get("newSellPrice")));
+      showToast("Prices adjusted successfully");
+      setIsOpen(false);
+    } catch (err) {
+      showToast("Failed to adjust price", "error");
+    }
+    setIsLoading(false);
+  }
+
+  return (
+    <>
+      <button className="client-btn btn-sm" style={{ background: "transparent", color: "#3b82f6", border: "1px solid #3b82f6" }} onClick={() => setIsOpen(true)}>Adjust Cost</button>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={`Adjust Cost: ${item.name}`}>
+        <form onSubmit={handleSubmit}>
+          <div className="form-grid-2">
+            <div className="form-group">
+              <label className="form-label">New Cost Price ($)</label>
+              <input name="newCostPrice" type="number" step="0.01" defaultValue={item.unitCost} className="form-input" required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">New Sell Price ($)</label>
+              <input name="newSellPrice" type="number" step="0.01" defaultValue={item.sellPrice} className="form-input" required />
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn client-btn" onClick={() => setIsOpen(false)} style={{ background: "transparent", color: "var(--text-primary)" }}>Cancel</button>
+            <button type="submit" className="btn btn-primary" style={{ background: "#3b82f6" }} disabled={isLoading}>{isLoading ? "Saving..." : "Update Cost"}</button>
+          </div>
+        </form>
+      </Modal>
+    </>
+  );
+}
+
+import { createInventoryItemAction } from "../../_actions";
+
+export function CreateItemButton({ warehouses }: { warehouses: any[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsLoading(true);
+    const fd = new FormData(e.currentTarget);
+    try {
+      await createInventoryItemAction({
+        name: fd.get("name") as string,
+        itemCode: fd.get("itemCode") as string,
+        category: fd.get("category") as string,
+        unit: fd.get("unit") as string,
+        unitCost: Number(fd.get("unitCost")),
+        sellPrice: Number(fd.get("sellPrice")),
+        currentStock: Number(fd.get("currentStock")),
+        reorderLevel: Number(fd.get("reorderLevel")),
+        warehouseId: Number(fd.get("warehouseId")),
+      });
+      showToast("Item created successfully");
+      setIsOpen(false);
+    } catch (err) {
+      showToast("Failed to create item", "error");
+    }
+    setIsLoading(false);
+  }
+
+  return (
+    <>
+      <button className="btn btn-primary" onClick={() => setIsOpen(true)}>+ New Item</button>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Create New Item">
+        <form onSubmit={handleSubmit}>
+          <div className="form-grid-2">
+            <div className="form-group">
+              <label className="form-label">Item Name</label>
+              <input name="name" type="text" className="form-input" required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Item Code (Optional)</label>
+              <input name="itemCode" type="text" className="form-input" />
+            </div>
+          </div>
+          <div className="form-grid-2">
+            <div className="form-group">
+              <label className="form-label">Category</label>
+              <input name="category" type="text" placeholder="e.g. Beverage, Meat" className="form-input" required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Warehouse</label>
+              <select name="warehouseId" className="form-select" required>
+                {warehouses.map((w) => <option key={w.id} value={w.id}>{w.name} ({w.farm.name})</option>)}
+              </select>
+            </div>
+          </div>
+          <div className="form-grid-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1rem' }}>
+            <div className="form-group">
+              <label className="form-label">Initial Stock</label>
+              <input name="currentStock" type="number" step="0.01" defaultValue="0" className="form-input" required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Cost Price ($)</label>
+              <input name="unitCost" type="number" step="0.01" defaultValue="0" className="form-input" required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Sell Price ($)</label>
+              <input name="sellPrice" type="number" step="0.01" defaultValue="0" className="form-input" required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Reorder Level</label>
+              <input name="reorderLevel" type="number" step="0.01" defaultValue="10" className="form-input" required />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="form-label">Unit of Measure</label>
+            <input name="unit" type="text" placeholder="e.g. kg, bottles, packs" className="form-input" required />
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn client-btn" onClick={() => setIsOpen(false)} style={{ background: "transparent", color: "var(--text-primary)" }}>Cancel</button>
+            <button type="submit" className="btn btn-primary" disabled={isLoading}>{isLoading ? "Saving..." : "Create Item"}</button>
+          </div>
+        </form>
+      </Modal>
+    </>
+  );
+}

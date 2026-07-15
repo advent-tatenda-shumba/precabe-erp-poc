@@ -10,7 +10,7 @@ export default async function HrPage() {
   if (!user) redirect("/login");
 
   const staff = await prisma.staff.findMany({
-    where: { farmId: user.farmId ?? 0 },
+    where: user.farmId ? { farmId: user.farmId } : undefined,
     include: {
       payrollLines: true
     },
@@ -18,7 +18,7 @@ export default async function HrPage() {
   });
 
   return (
-    <div style={{ backgroundColor: "#f8fafc", minHeight: "100vh" }}>
+    <div style={{ background: "linear-gradient(135deg, #f0fdf4 0%, #e0e7ff 50%, #fdf2f8 100%)", minHeight: "100vh" }}>
       <HrClient staff={staff} userName={user.name} />
     </div>
   );

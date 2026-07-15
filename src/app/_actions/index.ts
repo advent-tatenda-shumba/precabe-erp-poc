@@ -62,6 +62,22 @@ export async function logLivestockEvent(data: { batchId: number; eventType: stri
 // ==========================================
 // INVENTORY
 // ==========================================
+export async function createInventoryItemAction(data: { name: string; itemCode: string; category: string; unit: string; unitCost: number; sellPrice: number; currentStock: number; reorderLevel: number; warehouseId: number }) {
+  await prisma.inventoryItem.create({
+    data: {
+      name: data.name,
+      itemCode: data.itemCode,
+      category: data.category,
+      unit: data.unit,
+      unitCost: data.unitCost,
+      sellPrice: data.sellPrice,
+      currentStock: data.currentStock,
+      reorderLevel: data.reorderLevel,
+      warehouseId: data.warehouseId,
+    },
+  });
+  revalidatePath("/inventory");
+}
 export async function addInventoryStock(data: { itemId: number; quantity: number; unitCost: number; notes: string }) {
   await prisma.$transaction(async (tx) => {
     const item = await tx.inventoryItem.findUniqueOrThrow({ where: { id: data.itemId } });

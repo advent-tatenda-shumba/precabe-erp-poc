@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { RunPayrollButton } from "./PayrollForms";
+import { RunPayrollButton, ExportPayslipsButton } from "./PayrollForms";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +30,22 @@ export default async function Payroll() {
   const totalPayroll = staff.reduce((a, s) => a + s.salary, 0);
 
   const latestPayroll = payrolls[0];
+
+  const rosterData = staff.map((emp) => {
+    const paye = calcPAYE(emp.salary);
+    const nssa = Math.min(emp.salary * 0.045, 57.33);
+    const net = emp.salary - paye - nssa;
+    return {
+      name: emp.name,
+      role: emp.role,
+      type: emp.employeeType,
+      farm: emp.farm.name.split(" ")[0],
+      gross: emp.salary,
+      paye,
+      nssa,
+      net
+    };
+  });
 
   return (
     <div>
@@ -125,7 +141,7 @@ export default async function Payroll() {
       <div className="card">
         <div className="card-header">
           <h3>Staff Roster</h3>
-          <button className="client-btn btn-sm">Export Payslips</button>
+          <ExportPayslipsButton data={rosterData} />
         </div>
         <div className="table-responsive">
           <table className="table">
@@ -142,27 +158,22 @@ export default async function Payroll() {
               </tr>
             </thead>
             <tbody>
-              {staff.map((emp) => {
-                const paye = calcPAYE(emp.salary);
-                const nssa = Math.min(emp.salary * 0.045, 57.33);
-                const net = emp.salary - paye - nssa;
-                return (
-                  <tr key={emp.id}>
-                    <td><strong>{emp.name}</strong></td>
-                    <td>{emp.role}</td>
-                    <td>
-                      <span className={`badge ${emp.employeeType === "Permanent" ? "badge-green" : "badge-orange"}`}>
-                        {emp.employeeType}
-                      </span>
-                    </td>
-                    <td><span className="farm-tag">{emp.farm.name.split(" ")[0]}</span></td>
-                    <td>${emp.salary.toFixed(2)}</td>
-                    <td style={{ color: "var(--danger)" }}>${paye.toFixed(2)}</td>
-                    <td style={{ color: "var(--warning)" }}>${nssa.toFixed(2)}</td>
-                    <td style={{ color: "var(--success)" }}><strong>${net.toFixed(2)}</strong></td>
-                  </tr>
-                );
-              })}
+              {rosterData.map((emp, i) => (
+                <tr key={i}>
+                  <td><strong>{emp.name}</strong></td>
+                  <td>{emp.role}</td>
+                  <td>
+                    <span className={`badge ${emp.type === "Permanent" ? "badge-green" : "badge-orange"}`}>
+                      {emp.type}
+                    </span>
+                  </td>
+                  <td><span className="farm-tag">{emp.farm}</span></td>
+                  <td>${emp.gross.toFixed(2)}</td>
+                  <td style={{ color: "var(--danger)" }}>${emp.paye.toFixed(2)}</td>
+                  <td style={{ color: "var(--warning)" }}>${emp.nssa.toFixed(2)}</td>
+                  <td style={{ color: "var(--success)" }}><strong>${emp.net.toFixed(2)}</strong></td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

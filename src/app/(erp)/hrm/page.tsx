@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 export default async function HRM() {
   const [staff, farms] = await Promise.all([
     prisma.staff.findMany({
+      where: { status: "Active" },
       include: { farm: true },
       orderBy: [{ farmId: "asc" }, { name: "asc" }],
     }),

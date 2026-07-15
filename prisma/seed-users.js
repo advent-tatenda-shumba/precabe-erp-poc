@@ -55,6 +55,19 @@ async function main() {
       role: "Fuel Attendant",
       farmId: 1,
     },
+    {
+      name: "Bar Cashier",
+      email: "bar@pricabe.co.zw",
+      password: HASH,
+      role: "Bar Cashier",
+      farmId: 1,
+    },
+    {
+      name: "HR Manager",
+      email: "hr@pricabe.co.zw",
+      password: HASH,
+      role: "HR Manager",
+    },
   ];
 
   for (const u of users) {

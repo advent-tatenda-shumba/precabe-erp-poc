@@ -9,7 +9,7 @@ import {
   IconHome, IconChart, IconSprout, IconCow, IconBox, IconBread,
   IconCart, IconDollar, IconUsers, IconBook, IconTrendingUp,
   IconTruck, IconGear, IconLogOut, IconMenu, IconX, IconBuilding,
-  IconHandshake, IconBarChart, IconFactory,
+  IconHandshake, IconBarChart, IconFactory, IconAlert
 } from "../_components/Icons";
 
 interface NavUser {
@@ -49,6 +49,7 @@ export default function Sidebar({ user }: { user: NavUser | null }) {
         { name: "Livestock", icon: <IconCow />, path: "/livestock" },
         { name: "Inventory", icon: <IconBox />, path: "/inventory" },
         { name: "Manufacturing", icon: <IconFactory />, path: "/manufacturing" },
+        { name: "Shrinkage & Loss", icon: <IconAlert />, path: "/shrinkage" },
       ],
     },
     {
@@ -58,11 +59,13 @@ export default function Sidebar({ user }: { user: NavUser | null }) {
         { name: "Sales", icon: <IconDollar />, path: "/sales" },
         { name: "CRM", icon: <IconHandshake />, path: "/crm" },
         { name: "Address Book", icon: <IconBook />, path: "/address-book" },
+        { name: "Till Reconciliation", icon: <IconDollar />, path: "/pos-reconciliation" },
       ],
     },
     {
       label: "Finance",
       items: [
+        { name: "Financial Accounting", icon: <IconDollar />, path: "/accounting" },
         { name: "Cost Accounting", icon: <IconBarChart />, path: "/cost-accounting" },
         { name: "Fixed Assets", icon: <IconBuilding />, path: "/fixed-assets" },
       ],
